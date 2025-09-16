@@ -16,13 +16,10 @@ function LoginPage() {
 
     const result = await login(username, password);
     
-    if (result.success) {
-      alert("Login successful!");
-      // Redirect to home page or dashboard
-      window.location.href = "/";
-    } else {
+    if (!result.success) {
       alert(`Login failed: ${result.error}`);
     }
+    // Navigation is handled in the login function
   };
 
   return (

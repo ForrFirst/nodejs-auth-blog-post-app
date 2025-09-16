@@ -1,8 +1,12 @@
 import { ObjectId } from "mongodb";
+import protect from "../middlewares/protect.js";
 import { Router } from "express";
 import { db } from "../utils/db.js";
 
 const postRouter = Router();
+
+// Use protect middleware for all routes in postRouter
+postRouter.use(protect);
 
 // 🐨 Todo: Exercise #5
 // นำ Middleware `protect` มาใช้กับ `postRouter` ด้วย Function `app.use`

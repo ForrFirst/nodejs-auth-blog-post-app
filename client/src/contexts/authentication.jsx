@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = React.createContext();
 
@@ -31,14 +32,12 @@ function AuthProvider(props) {
         localStorage.setItem("token", data.token);
         
         // Decode JWT token to get user info
-        try {
-          const tokenPayload = JSON.parse(atob(data.token.split('.')[1]));
-          setState({ loading: false, error: null, user: tokenPayload });
-        } catch (decodeError) {
-          console.error("Error decoding token:", decodeError);
-          // If token decode fails, create a simple user object
-          setState({ loading: false, error: null, user: { id: "unknown", firstName: "User", lastName: "" } });
-        }
+        const tokenPayload = jwtDecode(data.token);
+        
+        setState({ loading: false, error: null, user: tokenPayload });
+        
+        // Navigate to home page
+        window.location.href = "/";
         
         return { success: true, data };
       } else {
@@ -88,6 +87,8 @@ function AuthProvider(props) {
   const logout = () => {
     localStorage.removeItem("token");
     setState({ loading: null, error: null, user: null });
+    // Navigate to login page
+    window.location.href = "/login";
   };
 
   const isAuthenticated = Boolean(localStorage.getItem("token"));
